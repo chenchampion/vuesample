@@ -1,17 +1,8 @@
 <template>
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <ul class="nav navbar-nav">
-        <li v-if=""><a v-link="'home'">Home</a></li>
-        <li v-if="!user.authenticated"><a v-link="'login'">Login</a></li>
-        <li v-if="!user.authenticated"><a v-link="'signup'">Sign Up</a></li>
-        <li v-if="user.authenticated"><a v-link="'secretquote'">Get API</a></li>
-        <li v-if="user.authenticated"><a v-link="'login'" @click="logout()">Logout</a></li>
-      </ul>
-    </div>    
-  </nav>
-  <div class="container">
-    <router-view></router-view>
+  <div id="app">
+    <router-view class="view"></router-view>
+    <router-view class="view" name="subject"></router-view>
+    <router-view class="view" name="search"></router-view>
   </div>
 </template>
 

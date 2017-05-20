@@ -1,4 +1,4 @@
-import {router} from '../index'
+import {router} from '../main'
 
 const API_URL = 'http://localhost:9000/'
 const LOGIN_URL = API_URL + 'rest-auth/login/'
@@ -12,17 +12,18 @@ export default {
   },
 
   login(context, creds, redirect) {
-    context.$http.post(LOGIN_URL, creds, (data) => {
-      localStorage.setItem('id_token', data.token)
-      console.log(data)
+    context.$http.post(LOGIN_URL, creds).then((data) =>{
+      //console.log(data.body.token)
+      localStorage.setItem('id_token', data.body.token)
+      //console.log(data)
 
       this.user.authenticated = true
 
       if(redirect) {
-        router.go(redirect)        
+        context.$router.push({path: redirect})      
       }
 
-    }).error((err) => {
+    }, (err) => {
       context.error = err
     })
   },
@@ -43,14 +44,15 @@ export default {
   },
 
   logout(context) {
-    context.$http.post(LOGOUT_URL, (data) =>{
+    context.$http.post(LOGOUT_URL).then((data) =>{
       localStorage.removeItem('id_token')
       this.user.authenticated = false
-    }).error((err) => {
+    }, (err) => {
       localStorage.removeItem('id_token')
       this.user.authenticated = false      
       context.error = err
     })
+    context.$router.push({name: 'LoginView'})
   },
 
   checkAuth() {
@@ -65,8 +67,8 @@ export default {
 
 
   getAuthHeader() {
-    return {
-      'Authorization': 'Bearer ' + localStorage.getItem('id_token')
-    }
+    var authHearder = {'Authorization': 'Bearer ' + localStorage.getItem('id_token')}
+    console.log(authHearder)
+    return authHearder
   }
 }

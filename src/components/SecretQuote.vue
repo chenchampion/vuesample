@@ -27,24 +27,12 @@ export default {
   methods: {
     getQuote() {
       this.$http
-        .get('http://localhost:9000/', (data) => {
-          this.quote = data;
-          //console.log(data);
-        }, { 
-          headers: auth.getAuthHeader()
-        })
-        .error((err) => console.log(err))
-    },
-     getValue(value) {
-      this.$http
-        .get(value, (data) => {
-          this.metaData = data;
-          //console.log(data);
-        }, { 
-          headers: auth.getAuthHeader()
-        })
-        .error((err) => console.log(err))
-    }   
+        .get('http://localhost:9000/', {}, {headers: auth.getAuthHeader()}).then( (data) => {
+          this.quote = data.body;
+          console.log(data.body);
+        }, (err) => {console.log(err)}
+        )
+    }
   },
 
   route: {
